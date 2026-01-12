@@ -29,7 +29,7 @@ const DiscardPile = () => {
               className="absolute inset-0"
               style={{
                 transform: `rotate(${rotationFromCard(card)}deg)`,
-                zIndex: discardPile.length - index,
+                zIndex: index,
               }}
               draggable={false}
             />

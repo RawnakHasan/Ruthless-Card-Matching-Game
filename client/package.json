@@ -24,6 +24,7 @@
     "server": "workspace:*",
     "shared": "workspace:*",
     "socket.io-client": "^4.8.3",
+    "sonner": "^2.0.7",
     "tailwindcss": "^4.1.18",
     "zod": "^4.3.5",
     "zustand": "^5.0.9"

@@ -1,3 +1,4 @@
+import { io } from "@server/index";
 import type { Game, Player } from "shared/dist";
 
 export const getPlayerWithUsername = (game: Game, username: string): Player => {
@@ -6,10 +7,13 @@ export const getPlayerWithUsername = (game: Game, username: string): Player => {
   );
 
   if (!playerWithUsername) {
-    throw new Error(`Player with username: ${username} not found`);
+    io.to(game.hostSocketId).emit(
+      "errors",
+      `Player with username: ${username} not found`
+    );
   }
 
-  return playerWithUsername;
+  return playerWithUsername!;
 };
 
 export const getPlayerWithPlayerId = (game: Game, socketId: string): Player => {
@@ -18,10 +22,13 @@ export const getPlayerWithPlayerId = (game: Game, socketId: string): Player => {
   );
 
   if (!playerWithSocketId) {
-    throw new Error(`Player with username: ${socketId} not found`);
+    io.to(game.hostSocketId).emit(
+      "errors",
+      `Player with username: ${socketId} not found`
+    );
   }
 
-  return playerWithSocketId;
+  return playerWithSocketId!;
 };
 
 export const getCurrentPlayer = (game: Game): Player => {
@@ -30,8 +37,8 @@ export const getCurrentPlayer = (game: Game): Player => {
   );
 
   if (!currentPlayer) {
-    throw new Error(`Player not Found`);
+    io.to(game.hostSocketId).emit("errors", "Player not Found");
   }
 
-  return currentPlayer;
+  return currentPlayer!;
 };

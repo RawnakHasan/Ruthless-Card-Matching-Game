@@ -10,8 +10,7 @@ export const getGame = (roomId: string, socket: CustomSocket): Game => {
       message: `Game with Room Id ${roomId} couldn't be found`,
     });
     io.to(socket.id).emit("roomExistence", false);
-    throw new Error(`Game not found for roomId: ${roomId}`);
   }
 
-  return game;
+  return game!;
 };

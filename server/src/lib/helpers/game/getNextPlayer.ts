@@ -1,3 +1,4 @@
+import { io } from "@server/index";
 import type { Game, Player } from "shared/dist";
 
 export const getNextPlayer = (game: Game): Player => {
@@ -14,8 +15,8 @@ export const getNextPlayer = (game: Game): Player => {
   const nextPlayer = game.players[nextPlayerIndex];
 
   if (!nextPlayer) {
-    throw new Error("Next Player Not Found!");
+    io.to(game.hostSocketId).emit("errors", "Next Player Not Found!");
   }
 
-  return nextPlayer;
+  return nextPlayer!;
 };

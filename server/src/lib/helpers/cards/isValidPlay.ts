@@ -1,5 +1,6 @@
-import type { Card, Game, Player } from "shared/dist";
+import type { Card, CustomSocket, Game, Player } from "shared/dist";
 import { getTopCard } from "../game";
+import { io } from "@server/index";
 
 export const isValidPlay = (
   player: Player,
@@ -9,21 +10,23 @@ export const isValidPlay = (
   const topCard = getTopCard(game);
 
   if (player.id !== game.playerTurn) {
+    io.to(player.uuid).emit("errors", "Not your turn");
     return false;
   }
 
-  // If it is a wild card then it is always true
-  if (playedCard.type === "Wild") return true;
-
-  // If name matches it is always true
-  if (playedCard.name === topCard.name) return true;
-
-  // If color is same the it is always true
-  if (
+  if (playedCard.name === topCard.name) {
+    // If name matches it is always true
+    return true;
+  } else if (playedCard.type === "Wild") {
+    // If it is a wild card then it is always true
+    return true;
+  } else if (
     playedCard.color ===
     (topCard.type === "Wild" ? topCard.chosenColor : topCard.color)
-  )
+  ) {
+    // If color is same the it is always true
     return true;
+  }
 
   return false;
 };

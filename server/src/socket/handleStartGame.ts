@@ -5,7 +5,8 @@ import {
   getGame,
 } from "@server/lib/helpers/game";
 import { sendGameDataToClient } from "@server/lib/helpers/game/sendGameDataToClient";
-import type { CustomIo, CustomSocket } from "shared/dist";
+import type { CustomSocket } from "shared/dist";
+import { io } from "..";
 
 export const handleStartGame = (socket: CustomSocket) => {
   socket.on("startGame", ({ roomId }) => {
@@ -14,14 +15,14 @@ export const handleStartGame = (socket: CustomSocket) => {
 
     // If the requester isn't the host then game doesn't start
     if (socket.id !== game.hostSocketId) {
-      throw new Error(
-        `Non Host tried to start a Game with Room Code ${roomId}`
-      );
+      io.to(socket.id).emit("errors", "You Aren't the Host");
+      return;
     }
 
     // If only the host is present and no other player the game doesn't start
     if (game.players.length < 2) {
-      throw new Error(`There is only one Player in the Game`);
+      io.to(socket.id).emit("errors", "Who are ya going to play with");
+      return;
     }
 
     // generateDeck() function generates a full deck of UNO No Mercy Cards and Uses Fisher Yates Algorithm to shuffle them

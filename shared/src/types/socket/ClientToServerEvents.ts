@@ -17,15 +17,7 @@ export interface ClientToServerEvents {
 
   endGame: ({ roomId }: { roomId: string }) => void;
 
-  playCard: ({
-    card,
-    roomId,
-    socketId,
-  }: {
-    card: Card;
-    roomId: string;
-    socketId: string;
-  }) => void;
+  playCard: ({ card, roomId }: { card: Card; roomId: string }) => void;
 
   getCard: ({ roomId, socketId }: { roomId: string; socketId: string }) => void;
 

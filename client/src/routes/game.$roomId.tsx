@@ -6,6 +6,8 @@ import Sidebar from "../components/game/Sidebar";
 import GameBoard from "../components/game/GameBoard";
 import { useGameStore } from "../store/useGameStore";
 import { usePlayerStore } from "../store/usePlayerStore";
+import { useUsernameStore } from "../store/useUsernameStore";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/game/$roomId")({
   component: RouteComponent,
@@ -15,22 +17,32 @@ function RouteComponent() {
   const { roomId } = Route.useParams();
 
   const { setRoomId } = useRoomIdStore();
+  const { username } = useUsernameStore();
   const navigate = useNavigate();
 
   const { setGameState } = useGameStore();
   const { setPlayer } = usePlayerStore();
 
-  if (!socket.connected) {
-    socket.connect();
-  }
-
   useEffect(() => {
-    socket.emit("checkRoomExistence", roomId);
+    if (!socket.connected) {
+      socket.connect();
+      socket.emit("joinGame", { username, roomId });
+    }
 
+    socket.emit("checkRoomExistence", roomId);
     socket.emit("updateGame", { roomId });
 
+    const handleError = (errorMessage: string) => {
+      toast.error("Error", { description: errorMessage });
+    };
+    socket.on("errors", handleError);
+
     setRoomId(roomId);
-  }, [roomId, setRoomId]);
+
+    return () => {
+      socket.off("errors", handleError);
+    };
+  }, [roomId, setRoomId, username]);
 
   socket.on("roomExistence", (roomExistence) => {
     if (roomExistence === false) {

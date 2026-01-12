@@ -5,6 +5,7 @@ import {
   handleCreateGame,
   handleGameChat,
   handleGetCard,
+  handlePlayCard,
   handleStartGame,
   handleUpdateGame,
   hanldeJoinGame,
@@ -30,6 +31,7 @@ io.on("connection", (socket) => {
   handleUpdateGame(socket);
   handleStartGame(socket);
   handleGetCard(socket);
+  handlePlayCard(socket);
 
   handleGameChat(socket, io);
 

@@ -1,13 +1,19 @@
-import type { Game, Card } from "shared/dist";
+import type { Game, Card, CustomSocket } from "shared/dist";
 import { isValidPlay } from "./isValidPlay";
 import { getCurrentPlayer, getNextPlayer } from "../game";
 import { handleCardEffect } from "./handleCardEffect";
+import { io } from "@server/index";
 
-export const playCard = (game: Game, card: Card) => {
+export const playCard = (game: Game, card: Card, socket: CustomSocket) => {
   const currentPlayer = getCurrentPlayer(game);
 
+  if (currentPlayer.id !== game.playerTurn) {
+    io.to(currentPlayer.uuid).emit("errors", "Not your Turn Now");
+    return;
+  }
+
   if (!isValidPlay(currentPlayer, game, card)) {
-    throw new Error("Invalid Card Play");
+    return;
   }
 
   currentPlayer.hand = currentPlayer.hand.filter((c) => c.id !== card.id);
