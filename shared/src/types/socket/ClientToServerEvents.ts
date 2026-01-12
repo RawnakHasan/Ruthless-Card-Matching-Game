@@ -1,0 +1,43 @@
+import type { Card } from "../game";
+
+export interface ClientToServerEvents {
+  createGame: ({ username }: { username: string }) => void;
+
+  joinGame: ({
+    username,
+    roomId,
+  }: {
+    username: string;
+    roomId: string;
+  }) => void;
+
+  updateGame: ({ roomId }: { roomId: string }) => void;
+
+  startGame: ({ roomId }: { roomId: string }) => void;
+
+  endGame: ({ roomId }: { roomId: string }) => void;
+
+  playCard: ({
+    card,
+    roomId,
+    socketId,
+  }: {
+    card: Card;
+    roomId: string;
+    socketId: string;
+  }) => void;
+
+  getCard: ({ roomId, socketId }: { roomId: string; socketId: string }) => void;
+
+  checkRoomExistence: (roomId: string) => void;
+
+  sendMessage: ({
+    roomId,
+    message,
+    username,
+  }: {
+    roomId: string;
+    message: string;
+    username: string;
+  }) => void;
+}
