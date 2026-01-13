@@ -1,4 +1,4 @@
-import type { ClientGame, ClientPlayer, CustomSocket, Game } from "shared/dist";
+import type { ClientGame, ClientPlayer, Game } from "shared/dist";
 import { getPlayerWithPlayerId } from "./getPlayer";
 import { io } from "@server/index";
 

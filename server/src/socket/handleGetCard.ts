@@ -21,6 +21,7 @@ export const handleGetCard = (socket: CustomSocket) => {
     const drawnCards = drawCards(game, totalDraw);
 
     player.hand.push(...drawnCards);
+
     game.drawCount = 0;
 
     updatePlayerTurn(game);
