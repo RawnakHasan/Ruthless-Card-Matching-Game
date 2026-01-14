@@ -3,9 +3,11 @@ import type { ClientToServerEvents, ServerToClientEvents } from "shared/dist";
 import { Server } from "socket.io";
 import {
   handleCreateGame,
+  handleEndGame,
   handleGameChat,
   handleGetCard,
   handlePlayCard,
+  handleSevensSwapSocket,
   handleStartGame,
   handleUpdateGame,
   hanldeJoinGame,
@@ -32,6 +34,8 @@ io.on("connection", (socket) => {
   handleStartGame(socket);
   handleGetCard(socket);
   handlePlayCard(socket);
+  handleSevensSwapSocket(socket);
+  handleEndGame(socket);
 
   handleGameChat(socket, io);
 

@@ -32,7 +32,7 @@ export const handleStartGame = (socket: CustomSocket) => {
     game.gamePhase = "playing";
 
     // Card are dealed to players
-    dealCardsToPlayer(game, shuffledDeck, 25);
+    dealCardsToPlayer(game, shuffledDeck, 7);
 
     // First card from the deck is inserted into the discard Pile & rest of the cards are assigned to deck Pile
     const topCard = shuffledDeck.shift()!;

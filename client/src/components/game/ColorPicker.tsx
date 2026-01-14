@@ -1,4 +1,5 @@
 import type { CardColor } from "shared";
+import { DestructiveButton } from "../ui/Button";
 
 interface ColorPickerProps {
   onColorSelect: (color: CardColor) => void;
@@ -34,12 +35,9 @@ const ColorPicker = ({ onColorSelect, onCancel }: ColorPickerProps) => {
           ))}
         </div>
 
-        <button
-          onClick={onCancel}
-          className="w-full py-3 bg-error text-white rounded-lg font-semibold hover:bg-error/90 transition border-2 border-text active:scale-95"
-        >
+        <DestructiveButton onClick={onCancel} className="w-full">
           Cancel
-        </button>
+        </DestructiveButton>
       </div>
     </div>
   );

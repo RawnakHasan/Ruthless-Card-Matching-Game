@@ -10,4 +10,5 @@ export interface ServerToClientEvents {
   roomExistence: (roomExist: boolean) => void;
   userDataUpdate: (player: Player) => void;
   errors: (errorMessage: string) => void;
+  gameEnded: (message: string) => void;
 }

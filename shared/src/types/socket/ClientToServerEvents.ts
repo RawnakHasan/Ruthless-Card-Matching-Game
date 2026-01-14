@@ -32,4 +32,12 @@ export interface ClientToServerEvents {
     message: string;
     username: string;
   }) => void;
+
+  swapHands: ({
+    roomId,
+    targetPlayerId,
+  }: {
+    roomId: string;
+    targetPlayerId: number;
+  }) => void;
 }

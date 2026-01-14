@@ -2,8 +2,14 @@ import { useState } from "react";
 import { socket } from "../../lib/socket";
 import { usePlayerStore } from "../../store/usePlayerStore";
 import { useRoomIdStore } from "../../store/useRoomIdStore";
-import type { Card, CardColor, WildCard } from "shared";
+import {
+  type Card,
+  type CardColor,
+  type ClientPlayer,
+  type WildCard,
+} from "shared";
 import ColorPicker from "./ColorPicker";
+import PlayerSelector from "./PlayerSelector";
 
 const PlayerHand = () => {
   const { roomId } = useRoomIdStore();
@@ -13,6 +19,8 @@ const PlayerHand = () => {
   const [selectedWildCard, setSelectedWildCard] = useState<WildCard | null>(
     null
   );
+  const [showPlayerSelector, setShowPlayerSelector] = useState(false);
+  const [selectedSevenCard, setSelectedSevenCard] = useState<Card | null>(null);
 
   const handleCardClick = (card: Card) => {
     // Check if it's a Wild card
@@ -20,6 +28,10 @@ const PlayerHand = () => {
       // Show color picker
       setSelectedWildCard(card as WildCard);
       setShowColorPicker(true);
+    } else if (card.name === 7) {
+      setSelectedSevenCard(card);
+      setShowPlayerSelector(true);
+      return;
     } else {
       // Play normal/action card directly
       socket.emit("playCard", { card, roomId });
@@ -43,14 +55,30 @@ const PlayerHand = () => {
     setSelectedWildCard(null);
   };
 
+  const handlePlayerSelection = (player: ClientPlayer) => {
+    if (!player) return;
+
+    const card = selectedSevenCard;
+
+    if (!card) return;
+
+    socket.emit("swapHands", { roomId, targetPlayerId: player.id });
+    socket.emit("playCard", { card, roomId });
+
+    setShowPlayerSelector(false);
+    setSelectedSevenCard(null);
+  };
+
   const handleCancel = () => {
     setShowColorPicker(false);
     setSelectedWildCard(null);
+    setShowPlayerSelector(false);
+    setSelectedSevenCard(null);
   };
 
   return (
     <>
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto p-2">
         <div className="grid grid-rows-2 grid-flow-col auto-cols-max gap-4 px-4">
           {myHand.map((card) => (
             <img
@@ -69,6 +97,12 @@ const PlayerHand = () => {
         <ColorPicker
           onColorSelect={handleColorSelect}
           onCancel={handleCancel}
+        />
+      )}
+      {showPlayerSelector && (
+        <PlayerSelector
+          handlePlayerSelection={handlePlayerSelection}
+          handleCancel={handleCancel}
         />
       )}
     </>

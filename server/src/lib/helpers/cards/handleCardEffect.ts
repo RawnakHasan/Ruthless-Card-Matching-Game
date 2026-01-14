@@ -34,7 +34,11 @@ export const handleCardEffect = (game: Game, card: Card) => {
         case 6:
           break;
         case 7:
-          handleSevensSwap(game);
+          // Here I did intended to add the handleSevensSwap(game) effect but after some code writing and stuffs so
+          // I figured it would be really hard for me to impliment something so I made another socket to handle that
+          // there is another handler for this card only so when it will be played it will be played as a normal card
+          // And the main thing of swaping the hands will be done by the socket handler or even the handleSevensSwap
+          // function
           break;
         case 8:
           break;

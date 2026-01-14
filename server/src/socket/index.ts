@@ -1,3 +1,4 @@
+export { handleSevensSwapSocket } from "./handleSevensSwapSocket";
 export { handleRoomExistence } from "./handleRoomExistence";
 export { handleUpdateGame } from "./handleUpdateGame";
 export { handleCreateGame } from "./handleCreateGame";
@@ -6,3 +7,4 @@ export { handleGameChat } from "./handleGameChat";
 export { handlePlayCard } from "./handlePlayCard";
 export { hanldeJoinGame } from "./handleJoinGame";
 export { handleGetCard } from "./handleGetCard";
+export { handleEndGame } from "./handleEndGame";
