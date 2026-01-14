@@ -14,6 +14,13 @@ const PlayerComponent = ({ player }: { player: ClientPlayer }) => {
         ) : (
           ""
         )}
+        {player.cardCount === 0 ? (
+          ""
+        ) : (
+          <span className="absolute -bottom-2 -left-2 bg-primary aspect-square rounded-full size-6 flex items-center justify-center text-sm">
+            {player.cardCount}
+          </span>
+        )}
       </div>
       <h1
         className={`text-xl max-w-32 truncate inline-block ${player.username === username ? "text-primary font-bold" : ""}`}
