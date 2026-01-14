@@ -19,6 +19,11 @@ export const handlePlayCard = (socket: CustomSocket) => {
       return;
     }
 
+    if (card.type === "Wild" && !card.chosenColor) {
+      socket.emit("errors", "Wild card must have a chosen color");
+      return;
+    }
+
     if (!isValidPlay(game, card)) {
       socket.emit("errors", "Card is not valid");
       return;

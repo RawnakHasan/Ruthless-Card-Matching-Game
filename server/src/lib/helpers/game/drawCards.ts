@@ -7,8 +7,7 @@ export const drawCards = (game: Game, drawCount: number = 1): Card[] => {
   for (let i = 0; i < drawCount; i++) {
     if (game.deck.length === 0) {
       reshuffle(game);
-
-      if (game.deck.length === 0) break;
+      continue;
     }
 
     const card = game.deck.shift()!;

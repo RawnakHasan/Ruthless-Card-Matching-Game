@@ -76,7 +76,7 @@ export const handleCardEffect = (game: Game, card: Card) => {
           handleDrawTenCard(game);
           break;
         case "Color Roulette":
-          handleColorRouletteCard(game, card.chosenColor!);
+          handleColorRouletteCard(game, card);
           break;
       }
       break;

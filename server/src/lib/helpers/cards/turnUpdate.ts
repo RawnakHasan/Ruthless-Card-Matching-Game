@@ -2,27 +2,39 @@ import type { Card, Game } from "shared/dist";
 import { getNextPlayer } from "../game";
 
 export const turnUpdate = (game: Game, card: Card) => {
-  let skipTurnAdvance = false;
+  // Determine if turn should advance
+  let shouldAdvanceTurn = true;
 
-  switch (card.type) {
-    case "Wild":
-      if (
-        card.name === "Reverse Draw 4" ||
-        card.name === "Draw 6" ||
-        card.name === "Draw 10" ||
-        card.name === "Color Roulette"
-      ) {
-        skipTurnAdvance = true; // the effect handles turn advancement
-      }
-      break;
-    case "Action":
-      if (card.name === "Skip All" || card.name === "Skip") {
-        skipTurnAdvance = true;
-      }
-      break;
+  if (card.type === "Action") {
+    switch (card.name) {
+      case "Skip":
+        // Skip card effect already sets the turn (skips one player)
+        shouldAdvanceTurn = false;
+        break;
+
+      case "Skip All":
+        // Skip All keeps turn with current player
+        shouldAdvanceTurn = false;
+        break;
+
+      case "Reverse":
+        shouldAdvanceTurn = game.players.length >= 3;
+        break;
+
+      // All other action cards advance normally
+      case "Draw 2":
+      case "Draw 4":
+      case "Discard All":
+        shouldAdvanceTurn = true;
+        break;
+    }
   }
 
-  if (!skipTurnAdvance) {
+  // Wild cards always advance turn to the next player
+  // Normal cards always advance turn
+  // (shouldAdvanceTurn is already true by default)
+
+  if (shouldAdvanceTurn) {
     const { id: nextPlayerId } = getNextPlayer(game);
     game.playerTurn = nextPlayerId;
   }

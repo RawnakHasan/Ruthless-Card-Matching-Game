@@ -1,8 +1,15 @@
-import type { CardColor, Game } from "shared/dist";
+import type { Game, WildCard } from "shared/dist";
 import { getNextPlayer, reshuffle } from "../../game";
 import { drawCards } from "../../game/drawCards";
 
-export const handleColorRouletteCard = (game: Game, chosenColor: CardColor) => {
+export const handleColorRouletteCard = (game: Game, card: WildCard) => {
+  const chosenColor = card.chosenColor;
+
+  if (!chosenColor) {
+    console.error("Color Roulette card played without chosen color");
+    return;
+  }
+
   const targetPlayer = getNextPlayer(game);
 
   if (!targetPlayer) {
@@ -14,8 +21,7 @@ export const handleColorRouletteCard = (game: Game, chosenColor: CardColor) => {
   while (true) {
     if (game.deck.length === 0) reshuffle(game);
 
-    const drawnCards = drawCards(game, 1);
-    const drawnCard = drawnCards[0];
+    const [drawnCard] = drawCards(game, 1);
 
     if (!drawnCard) break;
 
